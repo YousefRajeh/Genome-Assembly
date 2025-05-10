@@ -322,11 +322,11 @@ class OLCAssembler:
                 sequence = self.overlap_graph.nodes[node]['sequence']
                 f.write(f"S\t{node}\t{sequence}\n")
             
-            # Write edges (links)
+            # Write edges (links) with more detailed information
             for u, v, data in self.overlap_graph.edges(data=True):
                 overlap_len = data['overlap']
-                # In GFA, we connect from the end of u to the start of v
-                f.write(f"L\t{u}\t+\t{v}\t+\t{overlap_len}M\n")
+                # Add more information to the edge representation
+                f.write(f"L\t{u}\t+\t{v}\t+\t{overlap_len}M\tOL:i:{overlap_len}\n")
         
         print(f"Exported overlap graph to {gfa_file}")
     

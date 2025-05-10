@@ -196,12 +196,15 @@ class DeBruijnGraphAssembler:
             
             # Write nodes (segments)
             for node in self.graph.nodes():
+                # Use the actual k-1 mer sequence as the sequence
                 f.write(f"S\t{node}\t{node}\n")
             
-            # Write edges (links)
+            # Write edges (links) with proper CIGAR string
             for u, v, data in self.graph.edges(data=True):
+                # Calculate overlap - for DBG with k-mers, overlap is k-1
+                overlap = self.k - 1
                 # In GFA, we connect from the end of u to the start of v
-                f.write(f"L\t{u}\t+\t{v}\t+\t{self.k-2}M\tRC:i:{data['weight']}\n")
+                f.write(f"L\t{u}\t+\t{v}\t+\t{overlap-1}M\tRC:i:{data['weight']}\n")
     
     def write_contigs(self, output_file):
         """
